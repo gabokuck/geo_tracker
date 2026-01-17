@@ -26,6 +26,9 @@ RUN bundle install && \
 # Copiar el código de la aplicación
 COPY . .
 
+# Forzamos permisos de ejecución en la carpeta bin para corregir el problema de Windows
+RUN chmod +x bin/*
+
 # Precompilar assets (Tailwind, Stimulus)
 # Nota: Usamos un SECRET_KEY_BASE dummy solo para que rails no falle al compilar assets
 RUN SECRET_KEY_BASE=dummy_for_build ./bin/rails assets:precompile
