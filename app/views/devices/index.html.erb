@@ -1,29 +1,27 @@
-<% content_for :title, "Devices" %>
-
-<div class="w-full">
-  <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
-  <% end %>
-
-  <div class="flex justify-between items-center">
-    <h1 class="font-bold text-4xl">Devices</h1>
-    <%= link_to "New device", new_device_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-gray-900">Monitor de GPS</h1>
+    <%= link_to "Nuevo Dispositivo", new_device_path, class: "bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700" %>
   </div>
 
-  <div id="devices" class="min-w-full divide-y divide-gray-200 space-y-5">
-    <% if @devices.any? %>
-      <% @devices.each do |device| %>
-        <div class="flex flex-col sm:flex-row justify-between items-center pb-5 sm:pb-0">
-          <%= render device %>
-          <div class="w-full sm:w-auto flex flex-col sm:flex-row space-x-2 space-y-2">
-            <%= link_to "Show", device, class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-            <%= link_to "Edit", edit_device_path(device), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-            <%= button_to "Destroy", device, method: :delete, class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+  <div 
+    id="map" 
+    class="w-full h-96 rounded-lg shadow-md mb-8 border border-gray-300 z-0"
+    data-controller="map"
+    data-map-markers-value="<%= @devices.map { |d| { lat: d.last_latitude, lng: d.last_longitude, name: d.serial_number } }.to_json %>"
+  ></div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <% @devices.each do |device| %>
+      <div class="bg-white overflow-hidden shadow rounded-lg border border-gray-100">
+        <div class="px-4 py-5 sm:p-6">
+          <dt class="text-sm font-medium text-gray-500 truncate">Serial: <%= device.serial_number %></dt>
+          <dd class="mt-1 text-2xl font-semibold text-gray-900"><%= device.description %></dd>
+          <div class="mt-2 text-xs text-gray-400">
+            <%= device.last_latitude %>, <%= device.last_longitude %>
           </div>
         </div>
-      <% end %>
-    <% else %>
-      <p class="text-center my-10">No devices found.</p>
+      </div>
     <% end %>
   </div>
 </div>
