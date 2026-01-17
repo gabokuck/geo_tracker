@@ -88,18 +88,16 @@ test:
 production:
   primary: &primary_production
     <<: *default
-    database: app_production
-    username: app
-    password: <%= ENV["APP_DATABASE_PASSWORD"] %>
+    # En lugar de pedir usuario/pass por separado, leemos la URL completa
+    url: <%= ENV["DATABASE_URL"] %>
+    # Desactivamos la creación automática de bases de datos separadas para cache/queue
+    # para que todo viva en tu única instancia de Postgres de Coolify
   cache:
     <<: *primary_production
-    database: app_production_cache
     migrations_paths: db/cache_migrate
   queue:
     <<: *primary_production
-    database: app_production_queue
     migrations_paths: db/queue_migrate
   cable:
     <<: *primary_production
-    database: app_production_cable
     migrations_paths: db/cable_migrate
