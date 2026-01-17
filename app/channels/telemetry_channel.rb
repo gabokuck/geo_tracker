@@ -1,6 +1,7 @@
 class TelemetryChannel < ApplicationCable::Channel
   def subscribed
-    # stream_from "some_channel"
+    # Cuando el cliente (navegador) se conecta, lo escuchamos en "telemetry_updates"
+    stream_from "telemetry_updates"
   end
 
   def unsubscribed

@@ -8,19 +8,28 @@
     id="map" 
     class="w-full h-96 rounded-lg shadow-md mb-8 border border-gray-300 z-0"
     data-controller="map"
-    data-map-markers-value="<%= @devices.map { |d| { lat: d.last_latitude, lng: d.last_longitude, name: d.serial_number } }.to_json %>"
+    data-map-markers-value="<%= @devices.map { |d| { serial: d.serial_number, lat: d.last_latitude, lng: d.last_longitude, name: d.serial_number } }.to_json %>"
   ></div>
 
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
     <% @devices.each do |device| %>
-      <div class="bg-white overflow-hidden shadow rounded-lg border border-gray-100">
+      <div class="bg-white overflow-hidden shadow rounded-lg border border-gray-100 flex flex-col justify-between">
+        
         <div class="px-4 py-5 sm:p-6">
           <dt class="text-sm font-medium text-gray-500 truncate">Serial: <%= device.serial_number %></dt>
-          <dd class="mt-1 text-2xl font-semibold text-gray-900"><%= device.description %></dd>
-          <div class="mt-2 text-xs text-gray-400">
-            <%= device.last_latitude %>, <%= device.last_longitude %>
+          <dd class="mt-1 text-lg font-semibold text-gray-900"><%= device.description %></dd>
+          <div class="mt-2 text-xs text-gray-400 font-mono">
+            Lat: <%= device.last_latitude %><br>
+            Lon: <%= device.last_longitude %>
           </div>
         </div>
+
+        <div class="bg-gray-50 px-4 py-4 sm:px-6 flex justify-end space-x-3 border-t border-gray-100">
+          <%= link_to "Editar", edit_device_path(device), class: "text-indigo-600 hover:text-indigo-900 font-medium text-sm" %>
+          
+          <%= link_to "Eliminar", device, data: { turbo_method: :delete, turbo_confirm: "¿Estás seguro?" }, class: "text-red-600 hover:text-red-900 font-medium text-sm ml-4" %>
+        </div>
+
       </div>
     <% end %>
   </div>
