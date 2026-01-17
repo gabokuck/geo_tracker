@@ -13,6 +13,16 @@ export default class extends Controller {
 
   connect() {
     console.log("Mapa y WebSockets conectados")
+
+  // --- INICIO DEL FIX DE ICONOS ---
+    // Esto soluciona el problema de la imagen rota forzando la carga desde el CDN
+    delete L.Icon.Default.prototype._getIconUrl;
+    L.Icon.Default.mergeOptions({
+      iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+      iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+      shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+    });
+    // --- FIN DEL FIX DE ICONOS ---
     this.markersMap = {} // Para guardar referencias a los pines (id -> marker)
 
     // 1. Iniciar Mapa
