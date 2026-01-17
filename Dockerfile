@@ -51,6 +51,6 @@ USER rails:rails
 # 1. db:prepare corre las migraciones si hay nuevas (o crea la BD si no existe)
 # 2. Luego arranca el servidor
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
-CMD ["/rails/bin/rails", "server", "-b", "0.0.0.0"]
+CMD ["/bin/sh", "-c", "/rails/bin/rails db:prepare && /rails/bin/rails server -b 0.0.0.0"]
 
 EXPOSE 3000
